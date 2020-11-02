@@ -3,6 +3,7 @@ package com.example.countdowntimer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PersistableBundle;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long mTimeLeftInMillis;
     private long mEndTime;
 
     @Override
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 resetTimer();
             }
         });
-        updateCountDownText();
+//        updateCountDownText();
     }
 
     private void startTimer() {
@@ -120,27 +121,64 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putLong("millisLeft", mTimeLeftInMillis);
+//        outState.putBoolean("timerRunning", mTimerRunning);
+//        outState.putLong("endTime", mEndTime);
+//    }
+
+
+//    @Override
+//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        mTimeLeftInMillis = savedInstanceState.getLong("millisLeft");
+//        mTimerRunning = savedInstanceState.getBoolean("timerRunning");
+//        updateCountDownText();
+//        updateButtons();
+//        if (mTimerRunning){
+//            mEndTime = savedInstanceState.getLong("endTime");
+//            mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
+//            startTimer();
+//        }
+//    }
+
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putLong("millisLeft", mTimeLeftInMillis);
-        outState.putBoolean("timerRunning", mTimerRunning);
-        outState.putLong("endTime", mEndTime);
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("millisLeft",mTimeLeftInMillis);
+        editor.putBoolean("timerRunning",mTimerRunning);
+        editor.putLong("endTime",mEndTime);
+
+        editor.apply();
+        mCountDownTimer.cancel();
     }
 
-
-
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mTimeLeftInMillis = savedInstanceState.getLong("millisLeft");
-        mTimerRunning = savedInstanceState.getBoolean("timerRunning");
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        mTimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        mTimerRunning = prefs.getBoolean("timerRunning",false);
+
         updateCountDownText();
         updateButtons();
-        if (mTimerRunning){
-            mEndTime = savedInstanceState.getLong("endTime");
+
+        if(mTimerRunning) {
+            mEndTime = prefs.getLong("endTime", 0);
             mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
-            startTimer();
+            if (mTimeLeftInMillis < 0) {
+                mTimeLeftInMillis = 0;
+                mTimerRunning = false;
+                updateCountDownText();
+                updateButtons();
+            } else {
+                startTimer();
+            }
         }
     }
 }
