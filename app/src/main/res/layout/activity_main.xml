@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/edit_text_input"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/text_view_countdown"
+        android:layout_centerHorizontal="true"
+        android:hint="Minutes"
+        android:inputType="number"
+        android:maxLength="4"/>
     <TextView
         android:id="@+id/text_view_countdown"
         android:layout_width="wrap_content"
@@ -15,6 +24,13 @@
         android:text="00:00"
         android:textColor="#000000"
         android:textSize="60sp" />
+    <Button
+        android:id="@+id/button_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/edit_text_input"
+        android:layout_toEndOf="@id/edit_text_input"
+        android:text="Set"/>
 
     <Button
         android:id="@+id/button_start_pause"
