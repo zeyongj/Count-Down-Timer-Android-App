@@ -4,7 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/image_white">
+
+    <Button
+        android:id="@+id/button_set1min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/edit_text_input"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="30dp"
+        android:text="1 Minute"
+        android:background="@drawable/button_clicked"/>
+
+    <Button
+        android:id="@+id/button_set2min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/edit_text_input"
+        android:layout_toRightOf="@id/button_set1min"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="30dp"
+        android:text="2 Minutes"
+        android:background="@drawable/button_clicked"/>
+
+    <Button
+        android:id="@+id/button_set3min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/edit_text_input"
+        android:layout_toRightOf="@id/button_set2min"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="30dp"
+        android:text="3 Minutes"
+        android:background="@drawable/button_clicked"/>
+
+    <Button
+        android:id="@+id/button_set5min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/edit_text_input"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="90dp"
+        android:text="5 Minutes"
+        android:background="@drawable/button_clicked"/>
+
+    <Button
+        android:id="@+id/button_set10min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/button_set5min"
+        android:layout_above="@id/edit_text_input"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:text="10 Minutes"
+        android:background="@drawable/button_clicked"/>
 
     <EditText
         android:id="@+id/edit_text_input"
@@ -12,7 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/text_view_countdown"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:hint="Minutes"
+        android:gravity="center"
         android:inputType="number"
         android:maxLength="4"/>
     <TextView
@@ -22,15 +78,18 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="00:00"
+        android:layout_marginBottom="15dp"
         android:textColor="#000000"
-        android:textSize="60sp" />
+        android:textSize="70sp" />
     <Button
         android:id="@+id/button_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/edit_text_input"
         android:layout_toEndOf="@id/edit_text_input"
-        android:text="Set"/>
+        android:text="Set"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/button_clicked"/>
 
     <Button
         android:id="@+id/button_start_pause"
@@ -38,7 +97,8 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:layout_below="@id/text_view_countdown"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_clicked"/>
 
     <Button
         android:id="@+id/button_reset"
@@ -47,9 +107,9 @@
         android:text="Reset"
         android:layout_below="@id/text_view_countdown"
         android:layout_toEndOf="@id/button_start_pause"
-        android:layout_marginStart="10dp"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
+        android:layout_marginStart="15dp"
+        android:visibility="visible"
+        android:background="@drawable/button_clicked"/>
 
 
 
