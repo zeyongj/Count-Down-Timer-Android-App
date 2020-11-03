@@ -1,9 +1,19 @@
 package com.example.countdowntimer;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -18,7 +28,12 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
+    String id ="channel_1";//id of channel
+    String description = "123";//Description information of channel
+    int importance = NotificationManager.IMPORTANCE_LOW;//The Importance of channel
+    NotificationChannel channel = new NotificationChannel(id, "123", importance);//Generating channel
     private EditText mEditTextInput;
     private TextView mTextViewCountDown;
     private Button mButtonSet;
@@ -224,10 +239,14 @@ public class MainActivity extends AppCompatActivity {
             mButtonStartPause.setText("Start");
 
             if(mTimeLeftInMillis < 1000) {
-                mButtonStartPause.setVisibility(View.INVISIBLE);
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                // Vibrate for 500 milliseconds
-                v.vibrate(500);
+                // Play alarm
+                alarm();
+                // Play vibration
+                vibrate();
+                //Play notification
+                notification();
+                resetTimer();
+
             }else{
                 mButtonStartPause.setVisibility(View.VISIBLE);
             }
@@ -239,6 +258,54 @@ public class MainActivity extends AppCompatActivity {
 //            }
         }
     }
+
+    private void notification() {
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= 26)
+        {
+            //When sdk version is larger than26
+            String id = "channel_1";
+            String description = "143";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(id, description, importance);
+            channel.enableLights(true);
+//          channel.enableVibration(true);//
+            manager.createNotificationChannel(channel);
+            Notification notification = new Notification.Builder(MainActivity.this, id)
+                    .setCategory(Notification.CATEGORY_MESSAGE)
+                    .setSmallIcon(R.drawable.notification)
+                    .setContentTitle("Alarm")
+                    .setContentText("The timeout timer has reached 0.")
+                    .setAutoCancel(true)
+                    .build();
+            manager.notify(1, notification);
+        }
+        else
+        {
+            //When sdk version is less than26
+            Notification notification = new NotificationCompat.Builder(MainActivity.this)
+                    .setContentTitle("Alarm")
+                    .setContentText("The timeout timer has reached 0.")
+                    .setSmallIcon(R.drawable.notification)
+                    .build();
+            manager.notify(1,notification);
+        }
+    }
+
+    private void vibrate() {
+        // Vibrate for 500 milliseconds
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(500);
+    }
+
+    private void alarm() {
+        Uri alarmSound =
+                RingtoneManager. getDefaultUri (RingtoneManager. TYPE_NOTIFICATION );
+        MediaPlayer mp = MediaPlayer. create (getApplicationContext(), alarmSound);
+        mp.start();
+    }
+
+
 
 //    @Override
 //    protected void onSaveInstanceState(@NonNull Bundle outState) {
